@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  :root{ --ink:#0f1839; --muted:#6b7a9c; --line:#e2e7f2; --blue:#264ad5; --bg:#eef1f8; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:15px/1.5 'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;}
+  .wrap{display:flex;min-height:100vh;align-items:flex-start;gap:32px;padding:32px;}
+  .stage{flex:1;display:flex;justify-content:center;}
+  .stage iframe{width:600px;height:1400px;border:0;background:#fff;
+                box-shadow:0 8px 40px rgba(15,24,57,.14);}
+  .panel{position:sticky;top:32px;width:288px;flex:0 0 288px;background:#fff;
+         border:1px solid var(--line);border-radius:14px;padding:22px;
+         box-shadow:0 6px 30px rgba(15,24,57,.08);}
+  h1{margin:0 0 2px;font-size:15px;font-weight:650;letter-spacing:-.01em}
+  .sub{margin:0 0 18px;font-size:12.5px;color:var(--muted)}
+  button{display:block;width:100%;padding:13px 14px;border:1px solid var(--blue);
+         border-radius:9px;background:var(--blue);color:#fff;font:inherit;font-size:13.5px;
+         font-weight:550;text-align:left;cursor:pointer;transition:.14s}
+  button:hover{background:#1d3cb5;border-color:#1d3cb5}
+  button.ok{background:#0f9d58;border-color:#0f9d58}
+  button small{display:block;font-weight:400;font-size:11.5px;opacity:.75;margin-top:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="stage"><iframe src="invite.html" title="Email preview"></iframe></div>
+  <aside class="panel">
+    <h1>VIP Invite</h1>
+    <p class="sub">16 September 2026 &middot; Rove Hotel, Dubai South</p>
+    <button id="copyRich" data-label="Copy for Gmail / Outlook">
+      Copy for Gmail / Outlook
+      <small>Pastes as the formatted email</small>
+    </button>
+  </aside>
+</div>
+
+<script>
+const btn = document.getElementById('copyRich');
+btn.onclick = async () => {
+  const label = btn.dataset.label, small = btn.querySelector('small').outerHTML;
+  try{
+    const h = await (await fetch('invite.html',{cache:'no-store'})).text();
+    // Gmail drops <head> but renders anything textual inside it, so send the body only
+    const m = h.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+    const frag = m ? m[1] : h;
+    await navigator.clipboard.write([new ClipboardItem({
+      'text/html':  new Blob([frag], {type:'text/html'}),
+      'text/plain': new Blob([frag], {type:'text/plain'})
+    })]);
+    btn.classList.add('ok'); btn.innerHTML = 'Copied, paste into compose' + small;
+  }catch(err){
+    btn.innerHTML = 'Failed: ' + err.message + small;
+  }
+  setTimeout(()=>{ btn.classList.remove('ok'); btn.innerHTML = label + small; }, 1500);
+};
+</script>
+</body>
+</html>
