@@ -21,6 +21,18 @@
   button:hover{background:#1d3cb5;border-color:#1d3cb5}
   button.ok{background:#0f9d58;border-color:#0f9d58}
   button small{display:block;font-weight:400;font-size:11.5px;opacity:.75;margin-top:2px}
+  .step{display:flex;gap:11px;margin-top:18px}
+  .step:first-of-type{margin-top:20px}
+  .num{flex:0 0 21px;width:21px;height:21px;border-radius:50%;background:var(--ink);color:#fff;
+       font-size:11.5px;font-weight:650;line-height:21px;text-align:center;margin-top:1px}
+  .body{flex:1;min-width:0}
+  .step h2{margin:0 0 8px;font-size:13px;font-weight:600;letter-spacing:-.005em;line-height:1.35}
+  .keys{margin:14px 0 0}
+  .keys .row{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted)}
+  .keys .row + .row{margin-top:10px}
+  kbd{display:inline-block;padding:2px 7px;border:1px solid var(--line);border-bottom-width:2px;
+      border-radius:5px;background:#fff;color:var(--ink);font:inherit;font-size:11.5px;
+      font-weight:600;margin:0}
 </style>
 </head>
 <body>
@@ -29,10 +41,27 @@
   <aside class="panel">
     <h1>VIP Invite</h1>
     <p class="sub">16 September 2026 &middot; Rove Hotel, Dubai South</p>
-    <button id="copyRich" data-label="Copy for Gmail / Outlook">
-      Copy for Gmail / Outlook
-      <small>Pastes as the formatted email</small>
-    </button>
+    <div class="step">
+      <div class="num">1</div>
+      <div class="body">
+        <h2>Copy the email</h2>
+        <button id="copyRich" data-label="Copy for Gmail / Outlook">
+          Copy for Gmail / Outlook
+          <small>Pastes as the formatted email</small>
+        </button>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">2</div>
+      <div class="body">
+        <h2>Paste into the email body</h2>
+        <div class="keys">
+          <div class="row"><kbd>&#8984;</kbd><kbd>V</kbd><span>on Mac</span></div>
+          <div class="row"><kbd>Ctrl</kbd><kbd>V</kbd><span>on Windows</span></div>
+        </div>
+      </div>
+    </div>
   </aside>
 </div>
 
